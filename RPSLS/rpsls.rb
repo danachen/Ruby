@@ -1,11 +1,9 @@
 require 'yaml'
 
 MESSAGES = YAML.load_file('messages.yml')
-
 module Formattable
-
   WIDTH = 48
-  
+
   private
 
   def message(key)
@@ -13,14 +11,19 @@ module Formattable
   end
 
   def prompt(message)
-    puts("#{message}")
+    puts(message)
   end
 end
 
 module Displayable
-  BOT_PLAYERS = { '1': 'R2D2', '2': 'Hal', '3': 'Chappie', '4': 'Sonny', '5': 'Number 5' }.freeze
+  BOT_PLAYERS = { '1': 'R2D2',
+                  '2': 'Hal',
+                  '3': 'Chappie',
+                  '4': 'Sonny',
+                  '5': 'Number 5' }.freeze
 
-  HANDS = { r: 'rock', p: 'paper', s: 'scissors', sp: 'sprock', l: 'lizard' }.freeze
+  HANDS = { r: 'rock', p: 'paper', s: 'scissors',
+            sp: 'sprock', l: 'lizard' }.freeze
 
   HANDS_IN_A_GAME = 3
 
@@ -28,7 +31,7 @@ module Displayable
 
   def display_welcome
     prompt(message('welcome_message'))
-    prompt("Player that wins the first #{HANDS_IN_A_GAME} rounds wins the game.")
+    prompt("Winner of the first #{HANDS_IN_A_GAME} rounds wins the game.")
   end
 
   def display_bot_players
@@ -57,7 +60,7 @@ module Displayable
   end
 
   def display_game_results
-    results = track_game_results
+    track_game_results
     prompt("Wins       #{game_results[0]}         #{game_results[1]}")
   end
 
@@ -67,25 +70,41 @@ module Displayable
     end
   end
 
+  def display_human_winner
+    prompt("#{human.name} is the overall winner!")
+  end
+
+  def display_bot_winner
+    prompt("#{bot.name} is the overall winner!")
+  end
+
+  def display_tie
+    prompt "We have a tie overall!"
+  end
+
   def display_overall_winner
     prompt(message('board1'))
     if game_results[0] > game_results[1]
-      prompt("#{human.name} is the overall winner!")
+      display_human_winner
     elsif game_results[0] < game_results[1]
-      prompt("#{bot.name} is the overall winner!")
+      display_bot_winner
     else
-      prompt("We have a tie overall!")
+      display_tie
     end
     prompt(message('board1'))
   end
 
-  def display_game_board
+  def display_game_board_header
     prompt(message('board1'))
     prompt(message('board2'))
     prompt(message('board1'))
     prompt(message('game_results'))
     prompt(message('board3'))
     prompt("Round     #{human.name}     #{bot.name}")
+  end
+
+  def display_game_board
+    display_game_board_header
     display_round_results
     display_game_results
     prompt(message('board3'))
@@ -192,7 +211,9 @@ class Sprock < Move
 end
 
 class Game
-  attr_accessor :human, :bot, :game_results, :game_history_human, :game_history_bot, :game_counter, :game_history_each_hand, :game_history_hash
+  attr_accessor :human, :bot
+  attr_reader :game_results, :game_history_human, :game_history_bot,
+              :game_counter, :game_history_hash
   include Formattable, Displayable
 
   private
@@ -203,7 +224,6 @@ class Game
     @game_results = Array.new(2, 0)
     @game_history_human = Array.new()
     @game_history_bot = Array.new()
-    @game_history_each_hand = Array.new()
     @game_counter = 0
     @game_history_hash = Hash.new()
   end
@@ -251,7 +271,7 @@ class Game
   def track_game_history_each_hand
     track_game_history_human
     track_game_history_bot
-    game_history_each_hand = game_history_human.zip(game_history_bot).last
+    game_history_human.zip(game_history_bot).last
   end
 
   def track_game_counter
