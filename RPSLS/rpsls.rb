@@ -23,7 +23,7 @@ module Displayable
                   '5': 'Number 5' }.freeze
 
   HANDS = { r: 'rock', p: 'paper', s: 'scissors',
-            sp: 'sprock', l: 'lizard' }.freeze
+            sp: 'spock', l: 'lizard' }.freeze
 
   HANDS_IN_A_GAME = 3
 
@@ -133,7 +133,17 @@ class Human < Player
   end
 
   def valid_human_name?(name)
-    name.empty?
+    name.strip.empty?
+  end
+
+  def valid_human_move(human_move)
+    if HANDS.keys.include?(human_move.to_sym)
+      self.move = HANDS[human_move.to_sym]
+    elsif HANDS.value?(human_move)
+      self.move = human_move
+    else
+      prompt(message('valid_hand_choice'))
+    end
   end
 
   def make_move
@@ -141,15 +151,9 @@ class Human < Player
     loop do
       prompt(message('choose_human_hand'))
       prompt(display_hands)
-      human_move = gets.chomp.to_sym
-      break if valid_human_move?(human_move)
-      prompt(message('valid_hand_choice'))
+      human_move = gets.chomp.downcase
+      return valid_human_move(human_move)
     end
-    self.move = HANDS[human_move]
-  end
-
-  def valid_human_move?(move)
-    HANDS.keys.include?(move)
   end
 end
 
@@ -188,7 +192,7 @@ end
 
 class Paper < Move
   def >(other)
-    other.name == 'rock' || 'lizard'
+    other.name == 'rock' || 'spock'
   end
 end
 
@@ -200,11 +204,11 @@ end
 
 class Lizard < Move
   def >(other)
-    other.name == 'paper' || 'sprock'
+    other.name == 'spock' || 'paper'
   end
 end
 
-class Sprock < Move
+class Spock < Move
   def >(other)
     other.name == 'scissors' || 'rock'
   end
@@ -228,35 +232,47 @@ class Game
     @game_history_hash = Hash.new()
   end
 
+  def new_game
+    @game_results = Array.new(2, 0)
+    @game_history_human = Array.new()
+    @game_history_bot = Array.new()
+    @game_counter = 0
+    @game_history_hash = Hash.new()
+  end
+
   def confirm_choices
     prompt(message("confirm_human_name_and_bot_choice"))
     prompt("#{human.name} is playing against #{bot.name} today.")
   end
 
-  def player_one_win_lose?
-    if human.move > bot.move
-      'won'
-    elsif bot.move > human.move
-      'lost'
-    else
-      'tie'
-    end
+  def player_won?
+    human.move > bot.move
+  end
+
+  def player_lost?
+    bot.move > human.move
+  end
+
+  def player_tie?
+    human.move == bot.move
   end
 
   def track_game_results
-    if player_one_win_lose? == 'won'
+    if player_won?
       game_results[0] += 1
-    elsif player_one_win_lose? == 'lost'
+    elsif player_lost?
       game_results[1] += 1
     end
     game_results
   end
 
   def announce_player_outcome
-    if player_one_win_lose? == 'tie'
-      prompt(message("tie"))
+    if player_won?
+      prompt("#{human.name} has won!")
+    elsif player_lost?
+      prompt("#{human.name} has lost!")
     else
-      prompt("#{human.name} has #{player_one_win_lose?}!")
+      prompt(message("tie"))
     end
   end
 
@@ -290,7 +306,7 @@ class Game
     loop do
       prompt(message('want_to_play_again'))
       play_again = gets.chomp
-      break if ['y', 'n'].include?(play_again)
+      break if !play_again.nil?
       prompt(message('valid_play_again_choice'))
     end
     play_again
@@ -301,11 +317,11 @@ class Game
   end
 
   def play_again?
-    true unless play_again_input == 'n'
+    play_again_input == 'y'
   end
 
   def clear
-    system "clear"
+    system("clear") || system("cls")
   end
 
   public
@@ -318,18 +334,26 @@ class Game
     confirm_choices
   end
 
-  def play
-    start_game
+  def play_main_loop
     loop do
       human.make_move
       bot.make_move
+      clear
       display_game_choices
       display_winner
       display_game_board
-      break if winner_yet? || !play_again?
-      clear
+      break if winner_yet?
     end
-    display_overall_winner
+  end
+
+  def play
+    start_game
+    loop do
+      play_main_loop
+      display_overall_winner
+      break unless play_again?
+      new_game
+    end
     display_goodbye
   end
 end
