@@ -1,6 +1,11 @@
+require 'pry'
+require 'io/console'
+
 module Displayable
   def display_welcome_message
     puts "Welcome to Tic Tac Toe, #{human.name}!"
+    puts "You are playing against #{Game::COMPUTER_NAME} today!"
+    puts ""
     puts "Whoever wins the first #{Game::MATCH_CALL} games win!"
   end
 
@@ -56,17 +61,16 @@ module Displayable
     puts "$$$$$$$$$$$$$$$$$$$$$$$$"
   end
 
-  def determine_winning_marker
-    case board.winning_marker
-    when human.marker
-      puts "#{human.name}, you won!"
-      human.score += 1
-    when computer.marker
-      puts "#{computer.name} the bot won!"
-      computer.score += 1
-    else
-      puts "It's a tie!"
-    end
+  def display_human_win_message
+    puts "#{human.name}, you won!"
+  end
+
+  def display_computer_win_message
+    puts "#{computer.name} the bot won!"
+  end
+
+  def display_tie_message
+    puts "It's a tie!"
   end
 end
 
@@ -85,7 +89,7 @@ module Formattable
   end
 
   def clear
-    system "clear"
+    system('clear') || system('cls')
   end
 
   def reset
@@ -218,8 +222,6 @@ end
 class Computer < Player
   def set_computer_name
     self.name = Game::COMPUTER_NAME
-    puts "You are playing against #{name} today!"
-    puts ""
   end
 end
 
@@ -243,14 +245,18 @@ class Game
     pre_play
 
     loop do
-      display_board
-      continue_playing?
-      summary_play_moves_and_refresh
-      break unless game_continues? && play_again?
-      reset
-      display_play_again_message
+      loop do
+        display_board
+        continue_playing?
+        summary_play_moves_and_refresh
+        break unless game_continues? && press_to_continue
+        reset
+        display_play_again_message
+      end
+      display_score
+      break unless play_again?
+      match_call_reset
     end
-    display_score
     display_goodbye_message
   end
 
@@ -276,6 +282,15 @@ class Game
     human.score < MATCH_CALL && computer.score < MATCH_CALL
   end
 
+  def match_call_reset
+    reset
+    human.move_history.clear
+    computer.move_history.clear
+    set_marker
+    human.score = 0
+    computer.score = 0
+  end
+
   def continue_playing?
     loop do
       current_player_moves
@@ -293,7 +308,7 @@ class Game
 
   def valid_marker_choice?
     loop do
-      human.marker = gets.chomp.upcase!
+      human.marker = gets.chomp.upcase
       break if ['X', 'O'].include?(human.marker)
       puts "Sorry, that's not a valid choice."
     end
@@ -378,14 +393,39 @@ class Game
     end
   end
 
-  def play_again?
-    answer = nil
-    loop do
-      puts "#{human.name}, press any key to continue"
-      answer = gets.chomp
-      break if answer
+  def determine_winning_marker
+    case board.winning_marker
+    when human.marker
+      display_human_win_message
+      human.score += 1
+    when computer.marker
+      display_computer_win_message
+      computer.score += 1
+    else
+      display_tie_message
     end
-    true
+  end
+
+  def press_to_continue
+    puts "#{human.name}, press any key to continue"
+    STDIN.getch
+  end
+
+  def play_again_input
+    play_again = nil
+    loop do
+      puts "#{human.name}, would you like to play again?"
+      puts "Press 'y/Enter' to continue, any other key to exit."
+      play_again = gets.chomp.downcase
+      break if !play_again.nil?
+      puts "Invalid input."
+      puts "Press 'y/Enter' to continue, any other key or Enter to exit."
+    end
+    play_again
+  end
+
+  def play_again?
+    play_again_input == 'y'
   end
 end
 
