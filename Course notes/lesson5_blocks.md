@@ -210,7 +210,7 @@ end
 ```
 * Original array had uneven nested levels, so if we want to add 1 to every value, need to find  way to access these values
 * Must first determine if the current array is an array or integer
-* # is good since it returns new array containing transformed values
+* Good since it returns new array containing transformed values
 
 Example 11: 
 
