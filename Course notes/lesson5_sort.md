@@ -88,8 +88,8 @@ Array#<=> method
 [['a', 'cat', 'b', 'c'], ['b', 2], ['a', 'car', 'd', 3], ['a', 'car', 'd']].sort
 # => [["a", "car", "d"], ["a", "car", "d", 3], ["a", "cat", "b", "c"], ["b", 2]]
 ```
-* # Typically, comparing a string with an integer will throw an error
-* # In this case, it didn’t happen because the comparison didn’t get that far
+* Typically, comparing a string with an integer will throw an error
+* In this case, it didn’t happen because the comparison didn’t get that far
 
 * This would’ve thrown an error since this comparison was carried out
 * cat is compared with 2
@@ -115,7 +115,7 @@ end
 
 `people = { Kate: 27, john: 25, Mike:  18 }`
 
-* # If sorting the hash by age
+* If sorting the hash by age
 ```ruby
 people.sort_by do |name, age| 
     age 
