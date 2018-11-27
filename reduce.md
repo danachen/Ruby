@@ -1,4 +1,4 @@
-This is how #reduce is introduced in the [Ruby docs](https://ruby-doc.org/core-2.4.0/Enumerable.html#method-i-reduce)
+This is how #reduce is introduced in the [Ruby docs]:(https://ruby-doc.org/core-2.4.0/Enumerable.html#method-i-reduce)
 
 Sum some numbers
 `(5..10).reduce(:+)                             #=> 45`
