@@ -1,4 +1,4 @@
-This is how #reduce is introduced in the [Ruby docs](https://ruby-doc.org/core-2.4.0/Enumerable.html#method-i-reduce):
+This is how #reduce is introduced in [Ruby docs](https://ruby-doc.org/core-2.4.0/Enumerable.html#method-i-reduce):
 
 Sum some numbers
 `(5..10).reduce(:+)                             #=> 45`
@@ -59,7 +59,7 @@ end
 "How are you?".chars.reduce { |memo, char| %w[a e i o u y].include?(char) ? memo + char * 5 : memo + char }
 ```
 
-4. We can also use #reduce to turn an array into a hash
+4. We can also use #reduce to turn an array into a hash.
 
 Remember this is one of the ways Ruby processes #reduce:
 reduce(initial) { |memo, obj| block } → obj
@@ -68,7 +68,7 @@ reduce(initial) { |memo, obj| block } → obj
 %w(a b c).reduce({}) {|memo, obj| memo.update(obj => obj.ord)}
 => {"a"=>97, "b"=>98, "c"=>99}
 ```
-Note that #update is the same as #merge, and is used to update a hash
+Note that #update is the same as #merge, and is used to update a hash.
 update(other_hash) → hsh
 update(other_hash){|key, oldval, newval| block} → hsh
 
@@ -97,7 +97,7 @@ end
 hsh
 ```
 
-5. This is an example of how reduce can be used in a procedural Fibo problem
+5. This is an example of how reduce can be used in a procedural Fibo problem.
 
 ```ruby
 p (3..10).reduce([1, 1]){|(a, b), _| [b, a+b]}
