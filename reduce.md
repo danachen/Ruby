@@ -1,24 +1,25 @@
 This is how #reduce is introduced in [Ruby docs](https://ruby-doc.org/core-2.4.0/Enumerable.html#method-i-reduce):
 
-Sum some numbers
+Ex: Sum some numbers
 `(5..10).reduce(:+)                             #=> 45`
 
-Same using a block and inject
+Ex: Same using a block and inject
 `-->(5..10).inject { |sum, n| sum + n }            #=> 45`
 
-Multiply some numbers
+Ex: Multiply some numbers
 `-->(5..10).reduce(1, :*)                          #=> 151200`
 
-Same using a block
+Ex: Same using a block
 `-->(5..10).inject(1) { |product, n| product * n } #=> 151200`
 
-Find the longest word
+Ex: Find the longest word
 ```ruby
 -->longest = %w{ cat sheep bear }.inject do |memo, word|
    memo.length > word.length ? memo : word
 end
 longest                                        #=> "sheep"
 ```
+Here are some applications of #reduce
 
 1. The most basic use of #reduce is its go-to use of adding an array of numbers
 
@@ -62,17 +63,20 @@ end
 4. We can also use #reduce to turn an array into a hash.
 
 Remember this is one of the ways Ruby processes #reduce:
-reduce(initial) { |memo, obj| block } → obj
+`reduce(initial) { |memo, obj| block } → obj`
 
 ```ruby
 %w(a b c).reduce({}) {|memo, obj| memo.update(obj => obj.ord)}
 => {"a"=>97, "b"=>98, "c"=>99}
 ```
 Note that #update is the same as #merge, and is used to update a hash.
+
+```ruby
 update(other_hash) → hsh
 update(other_hash){|key, oldval, newval| block} → hsh
+```
 
-How to do this with 1) map/each, and 2) each_with_object
+You can achieve the same effects with 1) map/each, and 2) each_with_object
 
 ```ruby
 hsh = {}
