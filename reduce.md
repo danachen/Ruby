@@ -1,25 +1,4 @@
-This is how #reduce is introduced in [Ruby docs](https://ruby-doc.org/core-2.4.0/Enumerable.html#method-i-reduce):
-
-Ex: Sum some numbers
-`(5..10).reduce(:+)                             #=> 45`
-
-Ex: Same using a block and inject
-`-->(5..10).inject { |sum, n| sum + n }            #=> 45`
-
-Ex: Multiply some numbers
-`-->(5..10).reduce(1, :*)                          #=> 151200`
-
-Ex: Same using a block
-`-->(5..10).inject(1) { |product, n| product * n } #=> 151200`
-
-Ex: Find the longest word
-```ruby
--->longest = %w{ cat sheep bear }.inject do |memo, word|
-   memo.length > word.length ? memo : word
-end
-longest                                        #=> "sheep"
-```
-Here are some applications of #reduce
+Here are some applications of #reduce:
 
 1. The most basic use of #reduce is its go-to use of adding an array of numbers
 
@@ -108,4 +87,27 @@ p (3..10).reduce([1, 1]){|(a, b), _| [b, a+b]}
 # => [34, 55]
 p (3..10).reduce([1, 1]){|(a, b), _| [b, a+b]}.last
 # => 55
+```
+----------------------------------------
+
+This is how #reduce is introduced in [Ruby docs](https://ruby-doc.org/core-2.4.0/Enumerable.html#method-i-reduce):
+
+Ex: Sum some numbers
+`(5..10).reduce(:+)                             #=> 45`
+
+Ex: Same using a block and inject
+`-->(5..10).inject { |sum, n| sum + n }            #=> 45`
+
+Ex: Multiply some numbers
+`-->(5..10).reduce(1, :*)                          #=> 151200`
+
+Ex: Same using a block
+`-->(5..10).inject(1) { |product, n| product * n } #=> 151200`
+
+Ex: Find the longest word
+```ruby
+-->longest = %w{ cat sheep bear }.inject do |memo, word|
+   memo.length > word.length ? memo : word
+end
+longest                                        #=> "sheep"
 ```
