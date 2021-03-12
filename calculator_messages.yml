@@ -1,0 +1,34 @@
+# calculator_messages.yml
+
+en: 
+  ask_name: "Can I get your name please?"
+  welcome: "Welcome to Calculator, "
+  valid_name: "Make sure to enter a valid name."
+  adding: "Adding"
+  subtracting: "Subtracting"
+  multiplying: "Multiplying"
+  dividing: "Dividing"
+  num1_prompt: "Please enter the first number"
+  num2_prompt: "Please enter the second number"
+  num_invalid: "Sorry, the number you entered is invalid. Try again!"
+  operator_invalid: "Sorry, the operation you selected is invalid. Try again!"
+  try_again: "Do you want to try again? Press y to calculate again!"
+  goodbye: "Thank you and goodbye!"
+
+  operator_prompt:
+    Select one of the following operations please 
+    1) add 
+    2) subtract
+    3) multiply
+    4) divide
+
+  the_two_numbers: " the two numbers ..."
+
+
+es:
+  name: "Can I get your name please?[ES]"
+  welcome: "Bienvenido a la calculadora! Entre su nombre:"
+  valid_name: "Asegúrese de entrar un nombre válido."
+
+
+
