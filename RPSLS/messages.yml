@@ -1,0 +1,19 @@
+welcome_message: Wecome to a game of Rock, Paper, Scissors, Lizard, and Spock!
+human_name_prompt: => Before we start, can I please have your name?
+welcome_robot_name_prompt: You will be playing against a bot opponent today. Choose your opponent wisely.
+welcome_bot_choices: "You have the following choices: 1) R2D2, 2) Hal, 3) Chappie, 4) Sonny, 5) Number 5."
+welcome_enter_choice: => Enter the number to make your choice.
+valid_human_name: => Sorry, please enter a valid name for yourself!
+valid_bot_choice: => Sorry, please enter a valid bot to play against!
+confirm_human_name_and_bot_choice: Thank you for your choice.
+choose_human_hand: Please choose from the following hands by selecting either the name, or shortened handle (rock/r, paper/p, scissors/s, spock/sp, or lizard/l).
+tie: We have a tie!
+valid_hand_choice: => Sorry, please enter a valid choice of hands to play!
+board1: '****************************'  
+board2: '       Game Board       ' 
+board3: ============================
+game_results: '   Game results so far  ' 
+headers: 'Round   Human   Bot   '
+want_to_play_again: => Would you like to play again? Enter y to continue, any other key to exit. 
+valid_play_again_choice: Sorry, that's not a valid choice. Please enter y for yes, or n for no. 
+goodbye_message: Goodbye, and thanks for a great game!
