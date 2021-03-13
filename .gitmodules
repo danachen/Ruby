@@ -1,0 +1,3 @@
+[submodule "Exercism"]
+	path = Exercism
+	url = https://github.com/danachen/Exercism.git
